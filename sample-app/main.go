@@ -148,6 +148,38 @@ func main() {
 	go withdraw()
 
 	wg.Wait()
+
+	//channel
+	// 建立一個有緩衝區大小為3的通道
+	ch := make(chan int, 3)
+
+	// 向通道中發送數據
+	go func() {
+		for i := 0; i < 5; i++ {
+			ch <- i
+			fmt.Println("Sent:", i)
+		}
+		close(ch)
+	}()
+
+	// 從通道中接收數據
+	go func() {
+		for v := range ch {
+			fmt.Println("Received:", v)
+			time.Sleep(time.Second)
+		}
+	}()
+
+	// 等待一段時間以確保所有操作完成
+	time.Sleep(6 * time.Second)
+
+	// 使用slice作為列表
+	list := []int{0, 1, 2, 3, 4}
+
+	// 打印列表中的元素
+	for _, v := range list {
+		fmt.Println("List element:", v)
+	}
 }
 
 // Callback實例
